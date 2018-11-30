@@ -36,14 +36,14 @@ module main(
 wire pulse;
 wire add_flag;
 wire cut_flag;
-wire CLK_500Hz;
-reg offset;
+//wire CLK_500Hz;
+reg[1:0] offset;
 
 
 clk_div To_1M (
     .clk(CLK_100MHz),
     .N(500),
-	 .offset(0),
+	 .offset(2'b00),
 	 .reset(0),
     .clk_out(CLK_100KHZ)
     );
@@ -52,7 +52,7 @@ clk_div To_1M (
 clk_div To_50K (
     .clk(CLK_100MHz),
     .N(1000),
-	 .offset(0),
+	 .offset(2'b00),
 	 .reset(0),
     .clk_out(CLK_50KHZ)
     );
@@ -68,7 +68,6 @@ clk_div To_500 (
 over_sample signal_detect (
     .clk_50K(CLK_50KHZ), 
     .signal(signal), 
-	 .pre_state(pre_state),
     .pulse(pulse)
     );
 
@@ -79,17 +78,17 @@ and_door And_1 (
     );
 
 and_door And_2 (
-    .a1(~CLK_500Hz), 
+    .a1(!CLK_500Hz), 
     .a2(pulse), 
     .And(add_flag)
     );
 
 always @(posedge CLK_50KHZ) begin
-	if (add_flag) begin
-		offset = 1;
-	end
 	if (cut_flag) begin
 		offset = 2;
+	end
+	else if ( offset!=2 && add_flag) begin
+		offset = 1;
 	end
 	else begin
 		offset = 0;

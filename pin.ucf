@@ -1,0 +1,4 @@
+NET "CLK_100MHz" LOC = V10;
+NET "signal" LOC = P11;
+
+NET "CLK_500Hz" LOC = L4;

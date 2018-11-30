@@ -21,9 +21,9 @@
 module over_sample(
 	input clk_50K,
 	input signal,
-	output reg pulse = 0,
-	output reg pre_state = 0
+	output reg pulse = 0
     );
+reg pre_state = 0;
 
 always @(posedge clk_50K) begin
 

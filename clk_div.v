@@ -37,7 +37,9 @@ always @(posedge clk) begin
 	
 	case(offset)
 		1: cnt = cnt + 5;
-		2: cnt = cnt;
+		2: if(cnt > 5) begin 
+				cnt = cnt - 5;
+			end
 		default: cnt = cnt + 1;
 	endcase
 	
